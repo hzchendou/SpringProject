@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="bf" class="com.hzchendou.aop.BeforeSay">
+    </bean>
+    <bean id="af" class="com.hzchendou.aop.AfterSay">
+    </bean>
+    <bean id="af1" class="com.hzchendou.aop.AfterSay2"/>
+
+    <bean id="say" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target"><!-- 指定被代理的对象 -->
+            <bean class="com.hzchendou.aop.SayHello">
+                <property name="name" value="fengsigaoju"></property>
+            </bean>
+        </property>
+        <!-- 指定启用基于Class的代理 -->
+        <property name="proxyTargetClass" value="true"/>
+        <!-- 指定生成的代理对象需要绑定的Advice或Advisor在bean容器中的名称 -->
+        <property name="interceptorNames">
+            <list>
+                <value>bf</value>
+                <value>af</value>
+                <value>af1</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--<aop:config>-->
+        <!--<aop:aspect ref="bf">&lt;!&ndash; 具体哪一个切入类 &ndash;&gt;-->
+            <!--<aop:before method="beforesay"-->
+                        <!--pointcut="execution(* com.hzchendou.aop.SayHello.say(..))"></aop:before>&lt;!&ndash; method为类的某个方法，ref是哪一个类,pointcut是执行到那边增强（即切入点的表达式，调用该方法增强 &ndash;&gt;-->
+        <!--</aop:aspect>-->
+        <!--<aop:aspect ref="af">-->
+            <!--<aop:after method="aftersay" pointcut="execution(* com.hzchendou.aop.SayHello.say(..))"></aop:after>&lt;!&ndash; 具体 &ndash;&gt;-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+</beans>
